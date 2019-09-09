@@ -57,21 +57,51 @@ def prepare_data(keyword_lenght, contents):
 
 
 # Contagem de frequencia das letras por posição na chave
+# TODO: levar em consideração frequencia das letras em português
 def frequency_count(_dict_, letter):
     if _dict_.__contains__(letter):
         _dict_.update({letter: _dict_[letter]+1})
-    else:
-        _dict_[letter] = 0
 
 
 def vigenere_test(values):
-    first_letter = dict()
-    second_letter = dict()
-    third_letter = dict()
-    fourth_letter = dict()
-    fifth_letter = dict()
-    sixth_letter = dict()
-    seventh_letter = dict()
+    # TODO: criar dict dinamicamente pelo tamanho da chave
+
+    base_dict = dict({
+        "a": 0,
+        "b": 0,
+        "c": 0,
+        "d": 0,
+        "e": 0,
+        "f": 0,
+        "g": 0,
+        "h": 0,
+        "i": 0,
+        "j": 0,
+        "k": 0,
+        "l": 0,
+        "m": 0,
+        "n": 0,
+        "o": 0,
+        "p": 0,
+        "q": 0,
+        "r": 0,
+        "s": 0,
+        "t": 0,
+        "u": 0,
+        "v": 0,
+        "w": 0,
+        "x": 0,
+        "y": 0,
+        "z": 0
+    })
+
+    first_letter = base_dict.copy()
+    second_letter = base_dict.copy()
+    third_letter = base_dict.copy()
+    fourth_letter = base_dict.copy()
+    fifth_letter = base_dict.copy()
+    sixth_letter = base_dict.copy()
+    seventh_letter = base_dict.copy()
     for words in values:
         frequency_count(first_letter, words[0])
         frequency_count(second_letter, words[1])
@@ -81,34 +111,8 @@ def vigenere_test(values):
         frequency_count(sixth_letter, words[5])
         frequency_count(seventh_letter, words[6])
 
-    # TODO refatorar essa contagem
-    for (key, value) in sorted(first_letter.items(), key=lambda x: x[1], reverse=True):
-        if(value > 200):
-            print(f"First Letter = {key} Count = {value}")
-
-    for (key, value) in sorted(second_letter.items(), key=lambda x: x[1], reverse=True):
-        if(value > 200):
-            print(f"Second Letter = {key} Count = {value}")
-
-    for (key, value) in sorted(third_letter.items(), key=lambda x: x[1], reverse=True):
-        if(value > 200):
-            print(f"Third Letter = {key} Count = {value}")
-
-    for (key, value) in sorted(fourth_letter.items(), key=lambda x: x[1], reverse=True):
-        if(value > 200):
-            print(f"Fourth Letter = {key} Count = {value}")
-
-    for (key, value) in sorted(fifth_letter.items(), key=lambda x: x[1], reverse=True):
-        if(value > 200):
-            print(f"Fifth Letter = {key} Count = {value}")
-
-    for (key, value) in sorted(sixth_letter.items(), key=lambda x: x[1], reverse=True):
-        if(value > 200):
-            print(f"Sixth Letter = {key} Count = {value}")
-
-    for (key, value) in sorted(seventh_letter.items(), key=lambda x: x[1], reverse=True):
-        if(value > 200):
-            print(f"Seventh Letter = {key} Count = {value}")
+    for (key, value) in sorted(first_letter.items()):
+        print(f"First Letter = {key} Count = {value}")
 
 
 def main():
