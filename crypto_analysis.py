@@ -76,7 +76,6 @@ def rotate_list(old_list):  #Code provided
      return new_list
 
 def key_generator(values, key_length):
-    # TODO: criar dict dinamicamente pelo tamanho da chave
 
     base_dict = dict({
         "a": 0, "b": 0, "c": 0, "d": 0, "e": 0, "f": 0, "g": 0, "h": 0, "i": 0, "j": 0, "k": 0, "l": 0, "m": 0, "n": 0, "o": 0, "p": 0, "q": 0, "r": 0, "s": 0, "t": 0, "u": 0, "v": 0, "w": 0, "x": 0, "y": 0, "z": 0
@@ -109,7 +108,6 @@ def key_generator(values, key_length):
     return key
 
 def vigenere_decode(ciphertext, key, alphabet):
-  ciphertext = ciphertext
   cipherList = list(ciphertext)
   keyList = list(key)
   alphaList = list(alphabet)
