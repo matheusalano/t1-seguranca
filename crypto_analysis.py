@@ -49,7 +49,7 @@ def split_chunk_data(i, arr, size):
 # Prepara o texto cifrado para ser analizado
 def prepare_data(keyword_lenght, contents):
     matrix_values = []
-    for i in range(0, (len(contents)-keyword_lenght), keyword_lenght):
+    for i in range(0, len(contents), keyword_lenght):
         word = split_chunk_data(i, contents, keyword_lenght)
         matrix_values.append(list(word))
 
@@ -88,7 +88,8 @@ def key_generator(values, key_length):
     for i in range(key_length):
         letter_feq = base_dict.copy()
         for word in values:
-            frequency_count(letter_feq, word[i])
+            if i < len(word):
+                frequency_count(letter_feq, word[i])
         cosets[i] = letter_feq
 
     key = ""
