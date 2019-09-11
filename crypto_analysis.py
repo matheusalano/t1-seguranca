@@ -1,7 +1,7 @@
 import sys
 from math import gcd
 from functools import reduce
-from constants import *
+from constants import ALPHABET, PORTUGUESE_FREQUENCY
 
 
 def kasiski_test(text):
@@ -102,7 +102,7 @@ def key_generator(values, key_length):
 
         differenceList = []
         for index in range(len(ALPHABET)):
-            differenceList.append( find_differences(freqList) )
+            differenceList.append(find_differences(freqList))
             freqList = switch_head_tail(freqList)
 
         letter_index = differenceList.index(min(differenceList))
