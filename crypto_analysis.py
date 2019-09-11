@@ -1,6 +1,7 @@
 import sys
 from math import gcd
 from functools import reduce
+from constants import *
 
 
 def kasiski_test(text):
@@ -47,10 +48,10 @@ def split_chunk_data(i, arr, size):
 
 
 # Prepara o texto cifrado para ser analizado
-def prepare_data(keyword_lenght, contents):
+def prepare_data(keyword_length, contents):
     matrix_values = []
-    for i in range(0, len(contents), keyword_lenght):
-        word = split_chunk_data(i, contents, keyword_lenght)
+    for i in range(0, len(contents), keyword_length):
+        word = split_chunk_data(i, contents, keyword_length)
         matrix_values.append(list(word))
 
     return matrix_values
@@ -63,17 +64,17 @@ def frequency_count(_dict_, letter):
         _dict_.update({letter: _dict_[letter]+1})
 
 
-def find_total_difference(list1, list2):
+def find_differences(freqList):
     sum = 0
-    for index in range(len(list1)):
-        sum += abs(list1[index] - list2[index])
+    for index in range(len(freqList)):
+        sum += abs(freqList[index] - PORTUGUESE_FREQUENCY[index])
 
     return sum
 
 
-def rotate_list(old_list):  # Code provided
-    new_list = old_list[:]
-    new_list.append(old_list[0])
+def switch_head_tail(list):  # Code provided
+    new_list = list[:]
+    new_list.append(list[0])
     del new_list[0]
     return new_list
 
@@ -86,48 +87,41 @@ def key_generator(values, key_length):
         "s": 0, "t": 0, "u": 0, "v": 0, "w": 0, "x": 0, "y": 0, "z": 0
     })
 
-    pt_freq = [.1463, .0104, .0388, .0499, .1257, .0102, .0130, .0128, .0618,
-               .0040, .0002, .0278, .0474, .0505, .1073, .0252, .0120, .0653,
-               .0781, .0434, .0463, .0167, .0001, .0021, .0001, .0047]
-
-    cosets = [None]*key_length
+    frequencies = [None]*key_length
 
     for i in range(key_length):
         letter_feq = base_dict.copy()
         for word in values:
             if i < len(word):
                 frequency_count(letter_feq, word[i])
-        cosets[i] = letter_feq
+        frequencies[i] = letter_feq
 
     key = ""
-    for coset in cosets:
-        cosetFreqList = list(coset.values())
-        alphaList = list(coset)
+    for freq in frequencies:
+        freqList = list(freq.values())
 
         differenceList = []
-        for index in range(len(alphaList)):
-            differenceList.append(
-                find_total_difference(cosetFreqList, pt_freq))
-            cosetFreqList = rotate_list(cosetFreqList)
+        for index in range(len(ALPHABET)):
+            differenceList.append( find_differences(freqList) )
+            freqList = switch_head_tail(freqList)
 
         letter_index = differenceList.index(min(differenceList))
-        letter = alphaList[letter_index]
+        letter = ALPHABET[letter_index]
         key += letter
 
     return key
 
 
-def vigenere_decode(ciphertext, key, alphabet):
+def decoder(ciphertext, key):
     cipherList = list(ciphertext)
     keyList = list(key)
-    alphaList = list(alphabet)
     decodeText = ""
 
     for index in range(len(ciphertext)):
-        cipherIndex = alphabet.index(cipherList[index])
-        keyIndex = alphabet.index(((keyList[index % len(key)])))
+        cipherIndex = ALPHABET.index(cipherList[index])
+        keyIndex = ALPHABET.index(((keyList[index % len(key)])))
         decodeTextIndex = (cipherIndex - keyIndex) % (26)
-        decodeText += alphabet[decodeTextIndex]
+        decodeText += ALPHABET[decodeTextIndex]
 
     return decodeText
 
@@ -137,9 +131,15 @@ def main():
     f = open(filepath, "r")
     contents = f.read()
     keyword_length = kasiski_test(contents)
-    values = prepare_data(keyword_length, contents)
-    keyword = key_generator(values, keyword_length)
-    print(vigenere_decode(contents, keyword, 'abcdefghijklmnopqrstuvwxyz'))
+    print('Keyword length: ', keyword_length)
+
+    chunked_text = prepare_data(keyword_length, contents)
+    keyword = key_generator(chunked_text, keyword_length)
+
+    print('\n\nKeyword: ', keyword)
+
+    decoded_text = decoder(contents, keyword)
+    print('\n\nDecoded text:\n', decoded_text)
 
 
 if __name__ == "__main__":
