@@ -1,7 +1,8 @@
 import sys
+from enum import Enum
 from math import gcd
 from functools import reduce
-from constants import ALPHABET, PORTUGUESE_FREQUENCY
+from constants import ALPHABET, PORTUGUESE_FREQUENCY, ENGLISH_FREQUENCY
 
 
 def kasiski_test(text):
@@ -127,7 +128,17 @@ def decoder(ciphertext, key):
 
 
 def main():
-    filepath = sys.argv[1]
+    filepath = ''
+    lang_frequency = None
+
+    if len(sys.argv) == 4 and sys.argv[1] == '-l':
+        filepath = sys.argv[3]
+        lang_frequency = ENGLISH_FREQUENCY if sys.argv[2] == 'en_us' else PORTUGUESE_FREQUENCY
+    elif len(sys.argv) == 2:
+        filepath = sys.argv[1]
+    else:
+        raise Exception('Parameters: -l <en_us or pt_br> <file_name>\nLanguage is optional.')
+    
     f = open(filepath, "r")
     contents = f.read()
     keyword_length = kasiski_test(contents)
@@ -140,11 +151,11 @@ def main():
 
     decoded_text = decoder(contents, keyword)
 
-    ff = open(sys.argv[1] + '.out', "w+")
+    ff = open(filepath + '.out', "w+")
     ff.truncate(0)
     ff.write(decoded_text)
     ff.close()
-    print('\n\nOpen ', sys.argv[1] + '.out')
+    print('\n\nOpen ', filepath + '.out')
 
 
 if __name__ == "__main__":
