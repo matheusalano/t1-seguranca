@@ -139,7 +139,12 @@ def main():
     print('\n\nKeyword: ', keyword)
 
     decoded_text = decoder(contents, keyword)
-    print('\n\nDecoded text:\n', decoded_text)
+
+    ff = open(sys.argv[1] + '.out', "w+")
+    ff.truncate(0)
+    ff.write(decoded_text)
+    ff.close()
+    print('\n\nOpen ', sys.argv[1] + '.out')
 
 
 if __name__ == "__main__":
