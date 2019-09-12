@@ -65,10 +65,12 @@ def frequency_count(_dict_, letter):
         _dict_.update({letter: _dict_[letter]+1})
 
 
-def find_differences(freqList):
+def find_differences(freqList, lang_frequency):
     sum = 0
+    totalLetters = reduce(lambda x, y: x + y, freqList)
     for index in range(len(freqList)):
-        sum += abs(freqList[index] - PORTUGUESE_FREQUENCY[index])
+        freq = (freqList[index] / totalLetters)
+        sum += abs(freq - lang_frequency[index])
 
     return sum
 
@@ -80,7 +82,7 @@ def switch_head_tail(list):  # Code provided
     return new_list
 
 
-def key_generator(values, key_length):
+def key_generator(values, key_length, lang_frequency):
 
     base_dict = dict({
         "a": 0, "b": 0, "c": 0, "d": 0, "e": 0, "f": 0, "g": 0, "h": 0, "i": 0,
@@ -103,7 +105,7 @@ def key_generator(values, key_length):
 
         differenceList = []
         for index in range(len(ALPHABET)):
-            differenceList.append(find_differences(freqList))
+            differenceList.append(find_differences(freqList, lang_frequency))
             freqList = switch_head_tail(freqList)
 
         letter_index = differenceList.index(min(differenceList))
@@ -136,6 +138,7 @@ def main():
         lang_frequency = ENGLISH_FREQUENCY if sys.argv[2] == 'en_us' else PORTUGUESE_FREQUENCY
     elif len(sys.argv) == 2:
         filepath = sys.argv[1]
+        lang_frequency = PORTUGUESE_FREQUENCY
     else:
         raise Exception('Parameters: -l <en_us or pt_br> <file_name>\nLanguage is optional.')
     
@@ -145,7 +148,7 @@ def main():
     print('Keyword length: ', keyword_length)
 
     chunked_text = prepare_data(keyword_length, contents)
-    keyword = key_generator(chunked_text, keyword_length)
+    keyword = key_generator(chunked_text, keyword_length, lang_frequency)
 
     print('\n\nKeyword: ', keyword)
 

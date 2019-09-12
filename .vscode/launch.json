@@ -9,7 +9,9 @@
             "console": "integratedTerminal",
             "cwd": "${workspaceFolder}",
             "args": [
-                "${workspaceFolder}/data/DemCifrado.txt"
+                "-l",
+                "en_us",
+                "${workspaceFolder}/data/20192-teste1.txt"
             ]
         }
     ]
