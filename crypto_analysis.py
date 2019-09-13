@@ -1,5 +1,4 @@
 import sys
-from enum import Enum
 from math import gcd
 from functools import reduce
 from constants import ALPHABET, PORTUGUESE_FREQUENCY, ENGLISH_FREQUENCY
@@ -136,12 +135,14 @@ def main():
     if len(sys.argv) == 4 and sys.argv[1] == '-l':
         filepath = sys.argv[3]
         lang_frequency = ENGLISH_FREQUENCY if sys.argv[2] == 'en_us' else PORTUGUESE_FREQUENCY
+
     elif len(sys.argv) == 2:
         filepath = sys.argv[1]
         lang_frequency = PORTUGUESE_FREQUENCY
     else:
-        raise Exception('Parameters: -l <en_us or pt_br> <file_name>\nLanguage is optional.')
-    
+        raise Exception(
+            'Parameters: -l <en_us or pt_br> <file_name>\nLanguage is optional.')
+
     f = open(filepath, "r")
     contents = f.read()
     keyword_length = kasiski_test(contents)
