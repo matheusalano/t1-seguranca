@@ -130,6 +130,8 @@ def decoder(ciphertext, key):
 
 def main():
     filepath = ''
+    output_filepath = './output/'
+    output_filename = 'decrypted.out'
     lang_frequency = None
 
     if len(sys.argv) == 4 and sys.argv[1] == '-l':
@@ -155,11 +157,11 @@ def main():
 
     decoded_text = decoder(contents, keyword)
 
-    ff = open(filepath + '.out', "w+")
+    ff = open(output_filepath + output_filename, "w+")
     ff.truncate(0)
     ff.write(decoded_text)
     ff.close()
-    print('\n\nOpen ', filepath + '.out')
+    print('\n\nOpen ', output_filepath + output_filename)
 
 
 if __name__ == "__main__":
